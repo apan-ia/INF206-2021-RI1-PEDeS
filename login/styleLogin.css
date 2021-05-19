@@ -1,0 +1,58 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.sidebar{
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    border-right: 1px solid black;
+}
+
+
+
+.sidebar ul a{
+    text-align: center;
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 50px;
+    font-size: 25px;
+    color: black;
+    box-sizing: border-box;
+    
+}
+
+.content{
+    font-size: 30px;
+    position: absolute;
+    top: 68px;
+    left: 200px;
+    margin: auto;
+    width: 60%;
+    padding: 20px;
+}
+
+.user{
+    font-size: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
