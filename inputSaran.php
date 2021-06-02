@@ -11,7 +11,7 @@
     $sql="INSERT INTO saran (Nama, No_Hp, Saran) VALUES ('$nama', '$no_hp', '$saran')";
 
     if($conn->query($sql) === TRUE){
-        echo "new record created successfully";
+        header("location: ../pengingat/pengingat.php");
     } else{
         echo "error: " . $sql . "<br>" . $conn->error;
     }
