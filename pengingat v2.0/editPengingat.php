@@ -1,39 +1,3 @@
-<?php
-// include database connection file
-include_once("config.php");
- 
-// Check if form is submitted for user update, then redirect to homepage after update
-if(isset($_POST['update']))
-{	
-	$id_kegiatan = $_POST['id_kegiatan'];
-	
-	$bulan=$_POST['bulan'];
-	$kegiatan=$_POST['kegiatan'];
-	$status=$_POST['status'];
-		
-	// update user data
-	$result = mysqli_query($conn, "UPDATE pengingat SET bulan='$bulan',kegiatan='$kegiatan',status='$status' WHERE id_kegiatan=$id_kegiatan");
-	
-	// Redirect to homepage to display updated user in list
-	header("location: pengingatAdmin.php");
-}
-?>
-<?php
-// Display selected user data based on id
-// Getting id from url
-$id_kegiatan = $_GET['id_kegiatan'];
- 
-// Fetech user data based on id
-$result = mysqli_query($conn);
- 
-while($_POST = mysqli_fetch_array($conn))
-{
-	$bulan = $_POST['bulan'];
-	$kegiatan = $_POST['kegiatan'];
-	$status = $_POST['status'];
-}
-?>
-
 <!doctype html>
 <html>
 <head>
@@ -49,11 +13,25 @@ while($_POST = mysqli_fetch_array($conn))
     <?php
       //perintah untuk memastikan apakah sudah login
       session_start();
-      if (!isset($_SESSION['nik'])) {
-        header('location:../rplLog.php');
-        exit;
-      }
+        if (isset($_SESSION['hak_akses'])) {
+            if($_SESSION['hak_akses'] == "user"){
+                header('location:pengingat.php');
+            }
+        }
+        if (!isset($_SESSION['nik'])) {
+        
+            header('location:../rplLog.php');
+            exit;
+        }
 
+    ?>
+
+    <?php
+      include 'config.php';
+      $id = $_GET['id'];
+      $sql = "SELECT * FROM pengingat WHERE id='$id'";
+      $result = mysqli_query($conn, $sql);
+      while ($row = mysqli_fetch_array($result)){
     ?>
  
 	<nav class="navbar navbar-expand-lg navbar-light bg-success">
@@ -109,10 +87,11 @@ while($_POST = mysqli_fetch_array($conn))
               EDIT KEGIATAN
             </div>
             <div class="card-body">
-              <form action="editPengingat.php" method="POST">
+              <form action="updatePengingat.php" method="POST">
                 
                 <div class="form-group">
                   <label>Bulan</label>
+                  <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                   <input type="text" name="bulan" value="<?php echo $row['bulan'] ?>" placeholder="Masukkan Tanggal" class="form-control">
                 </div>
 
@@ -131,6 +110,10 @@ while($_POST = mysqli_fetch_array($conn))
                 <button type="reset" class="btn btn-warning">RESET</button>
 
               </form>
+              <?php
+                }
+                mysqli_free_result($result);
+              ?>
             </div>
           </div>
         </div>
