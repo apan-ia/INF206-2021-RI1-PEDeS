@@ -7,16 +7,22 @@
  
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
  
-	<title>Pengingat</title>
+	<title>Pengingat Admin</title>
 </head>
 <body>
     <?php
       //perintah untuk memastikan apakah sudah login
       session_start();
-      if (!isset($_SESSION['nik'])) {
-        header('location:../rplLog.php');
-        exit;
-      }
+        if (isset($_SESSION['hak_akses'])) {
+            if($_SESSION['hak_akses'] == "user"){
+                header('location:pengingat.php');
+            }
+        }
+        if (!isset($_SESSION['nik'])) {
+        
+            header('location:../rplLog.php');
+            exit;
+        }
 
     ?>
  
@@ -90,7 +96,10 @@
                       include('config.php');
 
                       $no = 1;
-                      $sql = mysqli_query($conn,"SELECT * FROM pengingat");
+                      $sql = mysqli_query($conn,"SELECT * FROM pengingat WHERE status='belum dimulai'");
+                      if(isset($_GET['search'])){
+                        $sql=mysqli_query($conn, "SELECT * FROM pengingat WHERE kegiatan LIKE'%".$_GET['search']."%'");
+                      }
                       while($row = mysqli_fetch_array($sql)){
                   ?>
 
@@ -100,8 +109,8 @@
                       <td><?php echo $row['kegiatan'] ?></td>
                       <td><?php echo $row['status'] ?></td>
                       <td class="text-center">
-                        <a href="editPengingat.php?id=<?php echo $row['id_kegiatan'] ?>" class="btn btn-sm btn-primary">EDIT</a>
-                        <a href="hapusPengingat.php?id=<?php echo $row['id_kegiatan'] ?>" class="btn btn-sm btn-danger">HAPUS</a>
+                        <a href="editPengingat.php?id=<?php echo $row['id'] ?>" class="btn btn-sm btn-primary">EDIT</a>
+                        <a href="deletePengingat.php?id=<?php echo $row['id'] ?>" class="btn btn-sm btn-danger">HAPUS</a>
                       </td>
                   </tr>
 
