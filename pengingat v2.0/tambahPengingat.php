@@ -13,10 +13,16 @@
     <?php
       //perintah untuk memastikan apakah sudah login
       session_start();
-      if (!isset($_SESSION['nik'])) {
-        header('location:../rplLog.php');
-        exit;
-      }
+        if (isset($_SESSION['hak_akses'])) {
+            if($_SESSION['hak_akses'] == "user"){
+                header('location:pengingat.php');
+            }
+        }
+        if (!isset($_SESSION['nik'])) {
+        
+            header('location:../rplLog.php');
+            exit;
+        }
 
     ?>
  
